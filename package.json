@@ -1,0 +1,20 @@
+{
+  "name": "sonos-controller-nodejs",
+  "version": "0.1.0",
+  "description": "Application to communicate between sonos and yamaha.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "commander": "^2.12.2",
+    "date-diff": "^0.1.3",
+    "node-cron": "^1.2.1",
+    "sonos": "^0.18.0",
+    "underscore": "^1.8.3"
+  },
+  "author": "johan@henkens.com",
+  "license": "ISC"
+}
