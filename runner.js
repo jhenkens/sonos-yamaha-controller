@@ -3,7 +3,7 @@
 var _ = require('underscore')
 var sonos = require('sonos'),
     device = require('./device'),
-    config = require('./config/config.json'),
+    config = require('./config'),
     cron = require('node-cron'),
     datediff = require('date-diff'),
     YamahaAPI = require('yamaha-nodejs')

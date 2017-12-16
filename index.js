@@ -7,7 +7,7 @@
 const program = require('commander'),
     chalk = require("chalk"),
     sonos = require("sonos"),
-    config = require('./config/config.json'),
+    config = require('./config'),
     exec = require('child_process').exec,
     pkg = require('./package.json'),
     device = require('./device'),
@@ -50,6 +50,11 @@ program
     .command('start',{isDefault: true})
     .description('Start the tool')
     .action(main);
+
+program
+    .command('config',{isDefault: true})
+    .description('Dump the config')
+    .action(() => {console.log(config)});
 
 program.parse(process.argv);
 
