@@ -33,12 +33,15 @@ function collect_device_data(device, model, callback) {
 }
 
 function find(target, callback, timeout = 2000 ) {
+    let found = false;
      sonos.search({timeout: timeout}, function (device, model) {
          collect_device_data(device, model,
              (device) => {
                  if(device.coordinator && device.CurrentZoneName == target){
+                     found = true;
                      callback(device)
                  }
              })
-     })
+     });
+     setTimeout(() => {if(!found){console.log("Failed to find a sonos host.");}}, timeout+500 );
  }

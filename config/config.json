@@ -3,6 +3,13 @@
     "allow_search": true,
     "search_zone": "Portable",
     "fallback_ip": null,
+    "yamaha":{
+        "ip": "192.168.0.120",
+        "appletv_input":"HDMI_3",
+        "min_vol":-805,
+        "sonos_vol":-350,
+        "power_off_retries": 5
+    },
     "wait_before_poweroff_in_minutes": 0.5,
     "check_cron": "*/2 * * * * *",
     "host_update_cron": "*/6 * * * *"

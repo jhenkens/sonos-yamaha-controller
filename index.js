@@ -34,32 +34,24 @@ let search = () => {
  *
  */
 let main = (options) => {
+    console.log('Starting sonos yamaha connector...')
     runner.start()
 };
 
+program
+    .version(pkg.version);
 
 program
-    .version(pkg.version)
     .command('search')
     .description('Search and print info on the target zone')
     .action(() =>{ device.find(config.search_zone, (host) => {console.log(JSON.stringify(host))}, 2500)});
 
 program
-    .version(pkg.version)
-    .command('start')
+    .command('start',{isDefault: true})
     .description('Start the tool')
     .action(main);
-
-program
-    .version(pkg.version)
-    .command('helloworld')
-    .description('hi there!')
-    .option('-s, --short','make it short!')
-    .action((options) => {
-        if(options.short){console.log('hi world;')} else {console.log('helloworld')}
-    });
 
 program.parse(process.argv);
 
 // if program was called with no arguments, show help.
-if (program.args.length === 0) program.help();
+if (program.args.length === 0) main();

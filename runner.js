@@ -5,7 +5,9 @@ var sonos = require('sonos'),
     device = require('./device'),
     config = require('./config/config.json'),
     cron = require('node-cron'),
-    datediff = require('date-diff');
+    datediff = require('date-diff'),
+    YamahaAPI = require('yamaha-nodejs')
+    ;
 
 
 
@@ -15,6 +17,7 @@ module.exports = {
 
 let state = {
     host: null,
+    yamaha: null,
     last_playing: null,
     last_stopped: null,
     currently_playing: false,
@@ -22,6 +25,7 @@ let state = {
     last_turned_yamaha_off: null
 }
 function start(){
+    state.yamaha = new YamahaAPI(config.yamaha.ip)
     updateHost(() => checkIfPlaying(updateStatus));
 
     cron.schedule(config.host_update_cron, () => {
@@ -50,40 +54,42 @@ let updateHostByIp = (ip_address, callback) => {
 }
 
 let checkIfPlaying = (callback) => {
-    state.host.getCurrentState((err, track) => {
-        if(track == 'playing'){
-            state.last_playing = new Date()
-            state.currently_playing = true;
-            if(callback) callback()
-        } else if (track){
-            state.last_stopped = new Date()
-            state.currently_playing = false;
-            if(callback) callback()
-        }
-    });
+    if(state.host){
+        state.host.getCurrentState((err, track) => {
+            if(track == 'playing'){
+                state.last_playing = new Date()
+                state.currently_playing = true;
+                if(callback) callback()
+            } else if (track){
+                state.last_stopped = new Date()
+                state.currently_playing = false;
+                if(callback) callback()
+            }
+        });
+    }
 }
 
 let updateStatus = (playing) => {
     if(!state.currently_playing && state.last_playing != null){
         var alreadyTurnedYamahaOff = (new datediff(state.last_playing, state.last_turned_yamaha_off)) < 0;
         var minutes_since_last_playing = (new datediff(new Date(), state.last_playing)).minutes()
-        console.log(minutes_since_last_playing)
         if(minutes_since_last_playing > config.wait_before_poweroff_in_minutes){
-            turnYamhaOff();
+            for(var i = 0; i < config.yamaha.power_off_retries; i++){
+                turnYamahaOff();
+            }
         }
     } else if (state.currently_playing){
-        var shouldTurnOn = !state.last_turned_yamaha_on ||
-             (new datediff(state.last_stopped, state.last_turned_yamaha_on)).seconds() > 0;
-        turnYamhaOn();
+        turnYamahaOn();
     }
 }
 
-let turnYamhaOff = () =>{
+let turnYamahaOff = () =>{
     state.last_turned_yamaha_off = new Date();
     //Would be nice to query harmony here to see if we can restore the proper activity setting
     console.log("poweroff")
 }
-let turnYamhaOn = () =>{
+
+let turnYamahaOn = () =>{
     state.last_turned_yamaha_on = new Date();
     //Check if on, if not, set power and wait.
     //Check if input correct, if not, set input and wait
