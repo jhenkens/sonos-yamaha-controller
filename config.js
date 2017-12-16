@@ -11,7 +11,9 @@ let load_config_file = () => {
             return null;
         }
         try{
-            return require(filename);
+            var cfg = require(filename);
+            console.log('Loaded config file: ' + filename);
+            return cfg;
         } catch(ex) {
             console.log('Failed to load config file: ' + process.env.CONFIG_FILE)
             console.log(ex)
