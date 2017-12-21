@@ -1,16 +1,18 @@
 {
-    "scan_interval":10,
-    "allow_search": true,
-    "search_zone": "Portable",
+    "search_zone": "Family Room",
     "fallback_ip": null,
     "yamaha":{
         "ip": "192.168.0.120",
-        "appletv_input":"HDMI_3",
+        "sonos_input":"AUDIO1",
         "min_vol":-805,
-        "sonos_vol":-350,
-        "power_off_retries": 5
+        "sonos_vol":-150,
+        "defaul_vol":-300,
+        "sonos_surround":"Straight",
+        "power_on_delay":2000,
+        "change_delay":500
     },
-    "wait_before_poweroff_in_minutes": 0.5,
+    "wait_before_poweroff_in_minutes": 0.1,
+    "log_level":"silly",
     "check_cron": "*/2 * * * * *",
     "host_update_cron": "*/6 * * * *"
 }
