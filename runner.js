@@ -42,6 +42,7 @@ let state = {
 }
 function start(){
     logger.info( 'Starting sonos-yamaha runner.')
+    logger.info('Config:\n'+JSON.stringify(config,null,2))
     state.yamaha = new YamahaAPI(config.yamaha.ip)
     updateHost(() => checkIfPlaying(updateStatus));
 
@@ -110,7 +111,7 @@ let updateStatus = (playing) => {
 
 let ensureYamahaSurround = (surround) => {
     return () => {
-        logger.verbose('Enter: ensureYamahaSurround')
+        logger.verbose('Enter: ensureYamahaSurround('+surround+')')
         return promiseRetry((r,n) => {
             if(n > 1 ) logger.warn("Failed to change yamaha surround, trying again... (" + n + ")");
             return state.yamaha.getSurround().then((s) => {
