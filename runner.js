@@ -42,7 +42,6 @@ let state = {
 }
 function start(){
     logger.info( 'Starting sonos-yamaha runner.')
-    logger.info('Config:\n'+JSON.stringify(config,null,2))
     state.yamaha = new YamahaAPI(config.yamaha.ip)
     updateHost(() => checkIfPlaying(updateStatus));
 

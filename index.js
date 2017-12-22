@@ -34,7 +34,6 @@ let search = () => {
  *
  */
 let main = (options) => {
-    console.log('Starting sonos yamaha connector...')
     runner.start()
 };
 
